@@ -1,10 +1,13 @@
 const mongodb = require('mongodb')
 const MongoClient = mongodb.MongoClient;
+require('dotenv').config();
 
-let _db ;
-
+const USER_NAME = process.env.USER_NAME
+const USER_PASSWORD = process.env.USER_PASSWORD
+// console.log("Establishing a Connection.....")
+let _db;
 const mongoConnect = callback=>{
-  MongoClient.connect('mongodb+srv://sksunil0608:ZRyNzuFhyO0jJsIr@firstnosql.13dokgm.mongodb.net/shop?retryWrites=true&w=majority')
+  MongoClient.connect(`mongodb+srv://${USER_NAME}:${USER_PASSWORD}@firstnosql.13dokgm.mongodb.net/shop?retryWrites=true&w=majority`)
     .then(client => {
       console.log("Connected");
       _db = client.db()
