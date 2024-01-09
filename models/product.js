@@ -30,7 +30,6 @@ class Product {
     const db = getDb()
     return db.collection('products').find().toArray()
       .then(products => {
-        console.log(products)
         return products
       }).catch(error => {
         console.log(error)
@@ -44,7 +43,6 @@ class Product {
       .find({ _id: new mongodb.ObjectId(prodId) })
       .next()
       .then(product => {
-        console.log(product)
         return product
       }).catch(error => {
         console.log(error)
