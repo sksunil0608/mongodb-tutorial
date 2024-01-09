@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const errorController = require('./controllers/error');
 const mongoConnect = require('./util/database').mongoConnect
 const app = express();
-
+const User = require('./models/user')
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -30,5 +30,9 @@ app.use(shopRoutes);
 app.use(errorController.get404);
 
 mongoConnect(()=>{
+  const user = new User('Sunil','sksunil@gmail.com')
+  user.save().then(user=>{
+    return user
+  })
   app.listen(3000)
 })
