@@ -1,5 +1,5 @@
 const Product = require('../models/product');
-
+const User = require('../models/user')
 exports.getProducts = (req, res, next) => {
   Product.find()
     .then(products => {
@@ -52,8 +52,9 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
   req.user
-    .getCart()
-        .then(products => {
+    .populate('cart.items.cart_products')
+        .then(user => {
+          const products = user.cart.items
           res.render('shop/cart', {
             path: '/cart',
             pageTitle: 'Your Cart',
