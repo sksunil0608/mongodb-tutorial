@@ -15,17 +15,17 @@ const mongoose = require('mongoose');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use((req, res, next) => {
-//   User.findById('659e584b2ad25c50b20c31bc')
-//     .then(user => {
-//       req.user = new User(user.username,user.name,user.email,user.cart,user._id);
-//       next();
-//     })
-//     .catch(error => {
-//       console.log(error)
-//     });
+app.use((req, res, next) => {
+  User.findById('659ed5c609ab8c061325ac11')
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(error => {
+      console.log(error)
+    });
   
-// });
+});
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
@@ -35,6 +35,20 @@ app.use(errorController.get404);
 mongoose.connect(
   `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASSWORD}@firstnosql.13dokgm.mongodb.net/shop?retryWrites=true&w=majority`
   ).then(()=>{
+    User.findOne().then(user=>{
+      if(!user){
+        const user = new User({
+          username: 'sk',
+          name: 'Sunil Kumar',
+          email: 'sksunil@gmail.com',
+          cart: {
+            items: []
+          }
+        })
+        user.save()
+      }
+    })
+  }).then(()=>{
     app.listen(3000)
   }).catch(error=>{
     throw error
