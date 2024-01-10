@@ -15,14 +15,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  User.findById('659d296fae3ceea1263cbeb4')
+  User.findById('659e584b2ad25c50b20c31bc')
     .then(user => {
-      req.user = user;
+      req.user = new User(user.username,user.name,user.email,user.cart,user._id);
       next();
     })
     .catch(error => {
       console.log(error)
-      next();
     });
   
 });
@@ -33,7 +32,7 @@ app.use(shopRoutes);
 app.use(errorController.get404);
 
 mongoConnect(()=>{
-  const user = new User('sk','Sunil','sksunil@gmail.com')
+  const user = new User('sk', 'Sunil', 'sksunil@gmail.com', { items: [] })
   user.save().then(user=>{
     return user
   })
