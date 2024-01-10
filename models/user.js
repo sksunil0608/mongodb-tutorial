@@ -52,6 +52,15 @@ userSchema.methods.addToCart = function (product) {
   return this.save();
 };
 
+userSchema.methods.deleteItemFromCart= function(productId){
+  const updatedCartItems = this.cart.items.filter(item => {
+    return item.cart_products.toString() !== productId.toString();
+  });
+    
+    this.cart.items = updatedCartItems
+    return this.save()
+  }
+
 module.exports = mongoose.model("User", userSchema);
 // const ObjectId = require('mongodb').ObjectId
 // const getDb = require('../util/database').getDb
@@ -138,19 +147,7 @@ module.exports = mongoose.model("User", userSchema);
 //     });
 //   }
 
-//   deleteItemFromCart(productId){
-//     const db = getDb();
-//     // I can sepratly find that product id and update the cart item
-//     // without that product id
-//     const updatedCartItems = this.cart.items.filter(item=>{
-//       return item.productId.toString() !== productId.toString();
-//     });
-//     return db.collection('users')
-//     .updateOne(
-//       {_id:new ObjectId(this._id)},
-//       {$set:{cart: {items:updatedCartItems}}}
-//     )
-//   }
+
 
 //   addOrder(){
 //     const db = getDb();
